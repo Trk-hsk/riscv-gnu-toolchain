@@ -24,8 +24,8 @@ deploy-gcc:
     - ls -al
     - mkdir $CI_PROJECT_DIR/windows
     - mkdir $CI_PROJECT_DIR/linux
-    - cp /home/xl_ci/toolchain//nuclei_gnu/win32/newlibc/2021.1029-RC1-windows/nuclei_riscv_newlibc_prebuilt_win32_2021.1029-RC1-windows.zip $CI_PROJECT_DIR/windows
-    - cp /home/xl_ci/toolchain/nuclei_gnu/linux64/newlibc/2021.1029-RC1-linux/nuclei_riscv_newlibc_prebuilt_linux64_2021.1029-RC1-linux.tar.bz2 $CI_PROJECT_DIR/linux
+    - cp /home/xl_ci/toolchain//nuclei_gnu/win32/newlibc/2021.1105-RC2-windows/nuclei_riscv_newlibc_prebuilt_win32_2021.1105-RC2-windows.zip $CI_PROJECT_DIR/windows
+    - cp /home/xl_ci/toolchain//nuclei_gnu/linux64/newlibc/2021.1105-RC2-linux/nuclei_riscv_newlibc_prebuilt_linux64_2021.1105-RC2-linux.tar.bz2 $CI_PROJECT_DIR/linux
   tags:
     - env::native
     - host::xls01
