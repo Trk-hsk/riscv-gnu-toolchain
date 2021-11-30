@@ -22,9 +22,11 @@ build_gcc_linux:
     - echo "Build Nuclei GNU Toolchain for ${MODE} - {TARGET}"
     - TARGET_TUPLE=($(echo ${TARGET} | tr "-" "\n"))
     - TARGET_PREFIX=/opt/riscv
-    - ./configure --prefix=/opt/riscv --with-arch=${TARGET_TUPLE[0]} --with-abi=${TARGET_TUPLE[1]}
+    - TARGET_CONF="--with-arch=${TARGET_TUPLE[0]} --with-abi=${TARGET_TUPLE[1]}"
+    - echo "TARGET_CONF=$TARGET_CONF"
+    - ./configure --prefix=$TARGET_PREFIX $TARGET_CONF
     - sed -i -e 's/make_tuple = riscv$(1)-unknown-$(2)/make_tuple = riscv-nuclei-$(2)/g' Makefile
-    - make -j 4 ${MODE}
+    - make -j 4 ${MODE} > >(tee build.log)
     - |
       cd $TARGET_PREFIX
       set +e
@@ -32,9 +34,11 @@ build_gcc_linux:
       do
       strip -s $i
       done
-      cd ..
-      tar -czf nuclei_${MODE}_${TARGET}_toolchain_${CI_COMMIT_SHORT_SHA}.tar.gz
+      cd -
+      tar --transform "s/^\/opt\///" -czf nuclei_${MODE}_${TARGET}_toolchain_${CI_COMMIT_SHORT_SHA}.tar.gz $TARGET_PREFIX
   artifacts:
+    when: always
     name: "nuclei_${MODE}_${TARGET}_toolchain_${CI_COMMIT_SHORT_SHA}"
     paths:
-    - nuclei_${MODE}_${TARGET}_toolchain_${CI_COMMIT_SHORT_SHA}.tar.gz
+      - nuclei_${MODE}_${TARGET}_toolchain_${CI_COMMIT_SHORT_SHA}.tar.gz
+      - build.log
