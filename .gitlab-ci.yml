@@ -1,4 +1,7 @@
 variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+  GET_SOURCES_ATTEMPTS: 5
+  GIT_STRATEGY: fetch
   IMAGE: rego.corp.nucleisys.com/software/build_toolchain
   IMAGE_TAG: "18.04"
 
