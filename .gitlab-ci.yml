@@ -24,7 +24,7 @@ build_gcc_linux:
     - TARGET_PREFIX=/opt/riscv
     - ./configure --prefix=/opt/riscv --with-arch=${TARGET_TUPLE[0]} --with-abi=${TARGET_TUPLE[1]}
     - sed -i -e 's/make_tuple = riscv$(1)-unknown-$(2)/make_tuple = riscv-nuclei-$(2)/g' Makefile
-    - make -j ${MODE}
+    - make -j 4 ${MODE}
     - |
       cd $TARGET_PREFIX
       set +e
