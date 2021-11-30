@@ -1,36 +1,37 @@
-before_script:
-  - uname -a
-  - cat /etc/issue
+variables:
+  IMAGE: rego.corp.nucleisys.com/software/build_toolchain
+  IMAGE_TAG: "18.04"
 
-prepare_tools:
+default:
+  tags:
+    - env::docker
+    - net::outside
+  image: $IMAGE:$IMAGE_TAG
+
+build_gcc_linux:
   stage: build
-  timeout: 2h 30m
+  interruptible: true
+  parallel:
+    matrix:
+      - MODE: [ newlib, linux]
+        TARGET: [ rv32imafdcbpv-ilp32d, rv64imafdcbpv-lp64d ]
   script:
-    - echo "hello world"
-    - mkdir $CI_PROJECT_DIR/test -p
-  tags:
-    - env::native
-    - host::xls01
-  allow_failure: true
+    - echo "Build Nuclei GNU Toolchain for ${MODE} - {TARGET}"
+    - TARGET_TUPLE=($(echo ${TARGET} | tr "-" "\n"))
+    - TARGET_PREFIX=/opt/riscv
+    - ./configure --prefix=/opt/riscv --with-arch=${TARGET_TUPLE[0]} --with-abi=${TARGET_TUPLE[1]}
+    - sed -i -e 's/make_tuple = riscv$(1)-unknown-$(2)/make_tuple = riscv-nuclei-$(2)/g' Makefile
+    - make -j ${MODE}
+    - |
+      cd $TARGET_PREFIX
+      set +e
+      for i in `find libexec bin -type f`
+      do
+      strip -s $i
+      done
+      cd ..
+      tar -czf nuclei_${MODE}_${TARGET}_toolchain_${CI_COMMIT_SHORT_SHA}.tar.gz
   artifacts:
-    when: always
+    name: "nuclei_${MODE}_${TARGET}_toolchain_${CI_COMMIT_SHORT_SHA}"
     paths:
-    - $CI_PROJECT_DIR/test
-
-deploy-gcc:
-  stage: deploy
-  script:
-    - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
-    - ls -al
-    - mkdir $CI_PROJECT_DIR/windows
-    - mkdir $CI_PROJECT_DIR/linux
-    - cp /home/xl_ci/toolchain//nuclei_gnu/win32/newlibc/2021.1105-RC2-windows/nuclei_riscv_newlibc_prebuilt_win32_2021.1105-RC2-windows.zip $CI_PROJECT_DIR/windows
-    - cp /home/xl_ci/toolchain//nuclei_gnu/linux64/newlibc/2021.1105-RC2-linux/nuclei_riscv_newlibc_prebuilt_linux64_2021.1105-RC2-linux.tar.bz2 $CI_PROJECT_DIR/linux
-  tags:
-    - env::native
-    - host::xls01
-  artifacts:
-    name: "${CI_JOB_NAME}_${CI_COMMIT_REF_NAME}"
-    paths:
-    - $CI_PROJECT_DIR/windows/nuclei_riscv_newlibc_prebuilt_win32_2021.1029-RC1-windows.zip
-    - $CI_PROJECT_DIR/linux/nuclei_riscv_newlibc_prebuilt_linux64_2021.1029-RC1-linux.tar.bz2
+    - nuclei_${MODE}_${TARGET}_toolchain_${CI_COMMIT_SHORT_SHA}.tar.gz
