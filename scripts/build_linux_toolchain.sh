@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# https://gist.github.com/mohanpedala/1e2ff5661761d3abd0385e8223e16425#set--e--u--x--o-pipefail
+set -o pipefail
+
 MODE=${MODE:-newlib}
 TARGET=${TARGET:-rv32imafdcbpv-ilp32d}
 TARGET_PREFIX=${TARGET_PREFIX:-/opt/riscv}
@@ -51,6 +54,7 @@ $TOOLCHAIN_CONFIGURE --prefix=$TARGET_PREFIX $TARGET_CONF
 echo "STEP 2: Build toolchain"
 sed -i -e 's/make_tuple = riscv$(1)-unknown-$(2)/make_tuple = riscv-nuclei-$(2)/g' Makefile
 make -j 4 ${MODE} > $BUILD_LOG 2>&1
+tail -n20 $BUILD_LOG
 popd
 
 echo "STEP 3: Strip toolchain"
@@ -58,4 +62,4 @@ strip_toolchain_lin $TARGET_PREFIX
 
 echo "STEP 4: Archive toolchain"
 TOOLCHAIN_TARGZ=nuclei_${MODE}_${TARGET}_toolchain_${CI_COMMIT_SHORT_SHA}.tar.gz
-tar --transform "s/^\/opt\///" -czf $TOOLCHAIN_TARGZ $TARGET_PREFIX
+tar --transform "s/^opt\///" -czf $TOOLCHAIN_TARGZ $TARGET_PREFIX
