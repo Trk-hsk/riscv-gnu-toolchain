@@ -19,6 +19,7 @@ build_gcc_linux:
       - MODE: [ newlib, linux]
         TARGET: [ rv32imafdcbpv-ilp32d, rv64imafdcbpv-lp64d ]
   script:
+    - if [ "x${MODE}" == "xlinux" ] ; then apt install -y python3 ; fi
     - bash scripts/build_linux_toolchain.sh
   artifacts:
     when: always
