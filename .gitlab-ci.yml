@@ -19,23 +19,7 @@ build_gcc_linux:
       - MODE: [ newlib, linux]
         TARGET: [ rv32imafdcbpv-ilp32d, rv64imafdcbpv-lp64d ]
   script:
-    - echo "Build Nuclei GNU Toolchain for ${MODE} - {TARGET}"
-    - TARGET_TUPLE=($(echo ${TARGET} | tr "-" "\n"))
-    - TARGET_PREFIX=/opt/riscv
-    - TARGET_CONF="--with-arch=${TARGET_TUPLE[0]} --with-abi=${TARGET_TUPLE[1]}"
-    - echo "TARGET_CONF=$TARGET_CONF"
-    - ./configure --prefix=$TARGET_PREFIX $TARGET_CONF
-    - sed -i -e 's/make_tuple = riscv$(1)-unknown-$(2)/make_tuple = riscv-nuclei-$(2)/g' Makefile
-    - make -j 4 ${MODE} > >(tee build.log)
-    - |
-      cd $TARGET_PREFIX
-      set +e
-      for i in `find libexec bin -type f`
-      do
-      strip -s $i
-      done
-      cd -
-      tar --transform "s/^\/opt\///" -czf nuclei_${MODE}_${TARGET}_toolchain_${CI_COMMIT_SHORT_SHA}.tar.gz $TARGET_PREFIX
+    - bash scripts/build_linux_toolchain.sh
   artifacts:
     when: always
     name: "nuclei_${MODE}_${TARGET}_toolchain_${CI_COMMIT_SHORT_SHA}"
