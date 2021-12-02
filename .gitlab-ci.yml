@@ -26,6 +26,11 @@ default:
 build_gcc_linux:
   stage: build
   timeout: 4h
+  retry:
+      max: 2
+      when:
+        - script_failure
+        - unknown_failure
   interruptible: true
   parallel:
     matrix:
