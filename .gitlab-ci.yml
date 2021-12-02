@@ -1,7 +1,14 @@
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
-  GET_SOURCES_ATTEMPTS: 5
+  GET_SOURCES_ATTEMPTS: 3
   GIT_STRATEGY: fetch
+  GIT_DEPTH: "2"
+  TRANSFER_METER_FREQUENCY: "5s"
+  ARTIFACT_COMPRESSION_LEVEL: "fastest"
+  CACHE_COMPRESSION_LEVEL: "fastest"
+  FF_USE_FASTZIP: "true"
+  FF_SCRIPT_SECTIONS: "true"
+  FF_ENABLE_JOB_CLEANUP: "true" # https://gitlab.com/gitlab-org/gitlab-runner/-/issues/3856
   IMAGE: rego.corp.nucleisys.com/software/build_toolchain
   IMAGE_TAG: "18.04"
 
@@ -9,10 +16,16 @@ default:
   tags:
     - env::docker
     - net::outside
+  before_script:
+    - uname -a
+    - cat /etc/os-release
+    - date --utc +%s
+    - pwd
   image: $IMAGE:$IMAGE_TAG
 
 build_gcc_linux:
   stage: build
+  timeout: 4h
   interruptible: true
   parallel:
     matrix:
