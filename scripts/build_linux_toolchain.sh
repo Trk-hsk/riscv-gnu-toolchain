@@ -13,10 +13,10 @@ if [ -f "/.dockerenv" -o -f "/run/.containerenv" ] ; then
     echo "This is a docker environment"
     INDOCKER=1
     TARGET_PREFIX=${TARGET_PREFIX:-/opt/riscv}
-    BUILD_ROOT=${BUILD_ROOT:-/builds}
+    BUILD_ROOT=${BUILD_ROOT:-/toolchain_builds}
 else
     TARGET_PREFIX=${TARGET_PREFIX:-$REPODIR/riscv}
-    BUILD_ROOT=${BUILD_ROOT:-$REPODIR/builds}
+    BUILD_ROOT=${BUILD_ROOT:-$REPODIR/toolchain_builds}
 fi
 TOOLCHAIN_TARGZ=${TOOLCHAIN_TARGZ:-$REPODIR/nuclei_${MODE}_${TARGET}_toolchain_${CI_COMMIT_SHORT_SHA}.tar.gz}
 
