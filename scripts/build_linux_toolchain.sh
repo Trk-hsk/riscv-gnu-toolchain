@@ -90,5 +90,16 @@ popd
 echo "STEP 3: Strip toolchain"
 strip_toolchain_lin $TARGET_PREFIX
 
-echo "STEP 4: Archive toolchain"
+echo "STEP 4: Test toolchain"
+
+# if [ "x$MODE" == "xnewlib" ] ; then
+#     make -j 4 report-gcc-newlib
+#     make -j report-binutils-newlib
+# else
+#     make -j 4 report-gcc-linux
+#     make -j report-binutils-linux
+# fi
+
+
+echo "STEP 5: Archive toolchain"
 tar --transform "s/^opt\///" -czf $TOOLCHAIN_TARGZ $TARGET_PREFIX
