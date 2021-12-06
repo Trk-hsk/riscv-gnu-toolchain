@@ -27,6 +27,15 @@ build_gcc_linux:
   stage: build
   timeout: 4h
   when: manual
+  only:
+    changes:
+      - .gitlab-ci.yml
+      - qemu
+      - linux-headers
+      - riscv*
+      - scripts/*
+      - configure*
+      - Makefile.in
   retry:
       max: 2
       when:
