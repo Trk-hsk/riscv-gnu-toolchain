@@ -3613,7 +3613,7 @@ fi
 
 # Check whether --docdir was given.
 if test "x${docdir}" = xdefault; then :
-  docdir=${prefix}/share/doc/${PACKAGE_TARNAME}
+  docdir=${prefix}/share/doc
 else
   docdir=${docdir}
 
