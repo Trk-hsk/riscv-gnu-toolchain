@@ -454,6 +454,8 @@ stamps/build-gdb-newlib: $(GDB_SRCDIR)
 		--disable-gprof \
 		--disable-source-highlight \
 		--with-static-standard-libraries \
+		--with-libgmp-type=static \
+		--with-libexpat-type=static \
 		--pdfdir=$(DOC_DIR)
 	$(MAKE) -C $(notdir $@)
 	$(MAKE) -C $(notdir $@) install
