@@ -309,8 +309,8 @@ stamps/build-gcc-linux-stage1: $(GCC_SRCDIR) stamps/build-binutils-linux \
 		$(WITH_ABI) \
 		$(WITH_ARCH) \
 		$(WITH_TUNE) \
-		CFLAGS_FOR_TARGET="-O2 $(CFLAGS_FOR_TARGET)" \
-		CXXFLAGS_FOR_TARGET="-O2 $(CXXFLAGS_FOR_TARGET)"
+		CFLAGS_FOR_TARGET="-O2 -ffunction-sections -fdata-sections $(CFLAGS_FOR_TARGET)" \
+		CXXFLAGS_FOR_TARGET="-O2 -ffunction-sections -fdata-sections $(CXXFLAGS_FOR_TARGET)"
 	$(MAKE) -C $(notdir $@) inhibit-libc=true all-gcc
 	$(MAKE) -C $(notdir $@) inhibit-libc=true install-gcc
 	$(MAKE) -C $(notdir $@) inhibit-libc=true all-target-libgcc
@@ -345,8 +345,8 @@ stamps/build-gcc-linux-stage2: $(GCC_SRCDIR) $(addprefix stamps/build-glibc-linu
 		$(WITH_ABI) \
 		$(WITH_ARCH) \
 		$(WITH_TUNE) \
-		CFLAGS_FOR_TARGET="-O2 $(CFLAGS_FOR_TARGET)" \
-		CXXFLAGS_FOR_TARGET="-O2 $(CXXFLAGS_FOR_TARGET)"
+		CFLAGS_FOR_TARGET="-O2 -ffunction-sections -fdata-sections $(CFLAGS_FOR_TARGET)" \
+		CXXFLAGS_FOR_TARGET="-O2 -ffunction-sections -fdata-sections $(CXXFLAGS_FOR_TARGET)"
 	$(MAKE) -C $(notdir $@)
 	$(MAKE) -C $(notdir $@) install
 ifneq ($(DOC_DIR), /notgiven)
@@ -510,8 +510,8 @@ stamps/build-newlib: $(NEWLIB_SRCDIR) stamps/build-gcc-newlib-stage1
 		--enable-newlib-io-long-long \
 		--enable-newlib-io-c99-formats \
 		--enable-newlib-register-fini \
-		CFLAGS_FOR_TARGET="-O2 -D_POSIX_MODE $(CFLAGS_FOR_TARGET)" \
-		CXXFLAGS_FOR_TARGET="-O2 -D_POSIX_MODE $(CXXFLAGS_FOR_TARGET)" \
+		CFLAGS_FOR_TARGET="-Os -ffunction-sections -fdata-sections -D_POSIX_MODE $(CFLAGS_FOR_TARGET)" \
+		CXXFLAGS_FOR_TARGET="-Os -ffunction-sections -fdata-sections -D_POSIX_MODE $(CXXFLAGS_FOR_TARGET)" \
 		--pdfdir=$(DOC_DIR)
 	$(MAKE) -C $(notdir $@)
 	$(MAKE) -C $(notdir $@) install
@@ -596,8 +596,8 @@ stamps/build-gcc-newlib-stage2: $(GCC_SRCDIR) stamps/build-newlib \
 		$(WITH_ABI) \
 		$(WITH_ARCH) \
 		$(WITH_TUNE) \
-		CFLAGS_FOR_TARGET="-Os $(CFLAGS_FOR_TARGET)" \
-		CXXFLAGS_FOR_TARGET="-Os $(CXXFLAGS_FOR_TARGET)"
+		CFLAGS_FOR_TARGET="-Os -ffunction-sections -fdata-sections $(CFLAGS_FOR_TARGET)" \
+		CXXFLAGS_FOR_TARGET="-Os -ffunction-sections -fdata-sections $(CXXFLAGS_FOR_TARGET)"
 	$(MAKE) -C $(notdir $@)
 	$(MAKE) -C $(notdir $@) install
 ifneq ($(DOC_DIR), /notgiven)
@@ -660,8 +660,8 @@ stamps/build-gcc-musl-stage1: $(GCC_SRCDIR) stamps/build-binutils-musl \
 		$(WITH_ABI) \
 		$(WITH_ARCH) \
 		$(WITH_TUNE) \
-		CFLAGS_FOR_TARGET="-O2 $(CFLAGS_FOR_TARGET)" \
-		CXXFLAGS_FOR_TARGET="-O2 $(CXXFLAGS_FOR_TARGET)"
+		CFLAGS_FOR_TARGET="-O2 -ffunction-sections -fdata-sections $(CFLAGS_FOR_TARGET)" \
+		CXXFLAGS_FOR_TARGET="-O2 -ffunction-sections -fdata-sections $(CXXFLAGS_FOR_TARGET)"
 	$(MAKE) -C $(notdir $@) inhibit-libc=true all-gcc
 	$(MAKE) -C $(notdir $@) inhibit-libc=true install-gcc
 	$(MAKE) -C $(notdir $@) inhibit-libc=true all-target-libgcc
@@ -724,8 +724,8 @@ stamps/build-gcc-musl-stage2: $(GCC_SRCDIR) stamps/build-musl-linux \
 		$(WITH_ABI) \
 		$(WITH_ARCH) \
 		$(WITH_TUNE) \
-		CFLAGS_FOR_TARGET="-O2 $(CFLAGS_FOR_TARGET)" \
-		CXXFLAGS_FOR_TARGET="-O2 $(CXXFLAGS_FOR_TARGET)"
+		CFLAGS_FOR_TARGET="-O2 -ffunction-sections -fdata-sections $(CFLAGS_FOR_TARGET)" \
+		CXXFLAGS_FOR_TARGET="-O2 -ffunction-sections -fdata-sections $(CXXFLAGS_FOR_TARGET)"
 	$(MAKE) -C $(notdir $@)
 	$(MAKE) -C $(notdir $@) install
 	cp -a $(INSTALL_DIR)/$(MUSL_TUPLE)/lib* $(SYSROOT)
