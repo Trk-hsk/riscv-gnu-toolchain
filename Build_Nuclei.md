@@ -8,18 +8,23 @@ This guide is used to provide steps for build windows and linux version of **RIS
 
 This repository uses submodules. You need the `--recursive` option to fetch the submodules automatically.
 
-The Nuclei maintained source code is located in **nuclei-multilib** branch, please use this branch.
+The Nuclei maintained source code is located in **nuclei-master** branch, please use this branch.
+
+> - **nuclei-master** branch is stable branch for nuclei processor.
+> - **nuclei-develop** branch is develop branch for nuclei processor.
 
 ~~~
 cd ~
 git clone https://github.com/riscv-mcu/riscv-gnu-toolchain
-git checkout nuclei-multilib
+git checkout nuclei-master
 git submodule update --init --recursive
 ~~~
 
 ## Install prerequisites
 
 To build windows or linux version, you need to choose a proper version of linux distribution, here we recommend to use **Ubuntu 16.04 64bit** version, you can use docker tool to easily get this version if you already have installed Ubuntu.
+
+You may can take a try with our docker environment https://hub.docker.com/repository/docker/riscvmcu/gnutoolchain-centos6
 
 You also need to install extra packages to build toolchain:
 
