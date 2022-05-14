@@ -125,8 +125,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
+         os: [ubuntu-18.04]
 #         os: [ubuntu-latest]
-        os: [ubuntu-18.04, macos-10.15]
+#        os: [ubuntu-18.04, macos-10.15]
     env: 
       CC: gcc-8
       CXX: g++-8
@@ -143,14 +144,17 @@ jobs:
       if: startsWith(matrix.os, 'ubuntu')
       run: |
           sudo apt-get update
-          sudo apt-get install -y autoconf automake autotools-dev bc bison \
-          build-essential curl dejagnu expect flex gawk gperf libtool patchutils texinfo \
+          sudo apt-get -y install autoconf automake autotools-dev curl python3 \
+          libmpc-dev libmpfr-dev libgmp-dev gawk build-essential bison \
+          flex texinfo gperf libtool patchutils bc zlib1g-dev libexpat-dev \
           g++-8 gcc-8
 
     - name: Install Dependencies on macOS
       if: startsWith(matrix.os, 'macOS')
       run: |
-          brew install zlib expat gawk gnu-sed gcc@8
+          brew install python3 gawk gnu-sed gmp mpfr libmpc isl zlib expat gcc@8
+          brew tap discoteq/discoteq
+          brew install flock
 
     - name: Maximize build disk space
       if: startsWith(matrix.os, 'ubuntu')
@@ -236,6 +240,9 @@ jobs:
           build-essential curl dejagnu expect flex gawk gperf \
           libtool patchutils texinfo python3 zip \
           mingw-w64 gdb-mingw-w64 libz-mingw-w64-dev xz-utils
+          sudo apt-get install -y autoconf automake autotools-dev curl \
+          python3 libmpc-dev libmpfr-dev libgmp-dev gawk build-essential \
+          bison flex texinfo gperf libtool patchutils bc zlib1g-dev libexpat-dev
 
     - name: Maximize build disk space
       # You may pin to the exact commit or the version.
