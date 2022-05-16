@@ -7,7 +7,7 @@ on:
     branches: [ nuclei* ]
 
 env:
-  JOBS: 4
+  JOBS: 2
 
 jobs:
   build_glibc_linux_mac:
@@ -305,7 +305,7 @@ jobs:
         tar -xf gmp-6.2.1.tar
         cd gmp-6.2.1
         ./configure --host=i686-w64-mingw32 --prefix=/usr/i686-w64-mingw32/ --enable-cxx --enable-static --disable-shared
-        make -j8
+        make -j4
         make install
         # Remove dll dependencies such as zlib1.dll and libexpat-1.dll which can be checked using https://github.com/lucasg/Dependencies
         for i in `find /usr/i686-w64-mingw32/ -name "*.dll"`; do sudo mv $i $i.bak;  done
