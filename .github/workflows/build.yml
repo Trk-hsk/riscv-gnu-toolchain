@@ -7,7 +7,7 @@ on:
     branches: [ nuclei* ]
 
 env:
-  JOBS: 2
+  JOBS: 1
 
 jobs:
   build_glibc_linux_mac:
@@ -132,7 +132,7 @@ jobs:
       CC: gcc-8
       CXX: g++-8
       PREFIX: ${{ github.workspace }}/riscv
-      JOBS: 2
+      JOBS: 1
 
     steps:
     - name: Show System Information
