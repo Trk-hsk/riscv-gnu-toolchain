@@ -1,10 +1,11 @@
-name: Build GNU Toolchain
+name: Build ASR Toolchain
 
 on:
   push:
     branches: [ nuclei* ]
   pull_request:
     branches: [ nuclei* ]
+  workflow_dispatch:
 
 env:
   JOBS: 1
@@ -90,9 +91,9 @@ jobs:
         cd ./riscv-gcc/ && ./contrib/download_prerequisites
         cd -
 
-    - name: Change toolchain name to Nuclei
+    - name: Change toolchain name to asr
       run: |
-        sed -i -e 's/make_tuple = riscv$(1)-unknown-$(2)/make_tuple = riscv-nuclei-$(2)/g' Makefile
+        sed -i -e 's/make_tuple = riscv$(1)-unknown-$(2)/make_tuple = riscv-asr-$(2)/g' Makefile
 
     - name: Build Toolchain
       run: |
@@ -111,14 +112,14 @@ jobs:
 
     - name: Archive Toolchain
       run: |
-        tar -jcf nuclei_riscv_gnu_toolchain_prebuilt_glibc_${{ matrix.os }}.tar.bz2 -C ${{ env.PREFIX }} .
+        tar -jcf asr_riscv_gnu_toolchain_prebuilt_glibc_${{ matrix.os }}.tar.bz2 -C ${{ env.PREFIX }} .
     - name: Upload built toolchain artifact
       uses: actions/upload-artifact@v2
       with:
         # Artifact name
-        name: nuclei_riscv_gnu_toolchain_prebuilt_glibc_${{ matrix.os }}
+        name: asr_riscv_gnu_toolchain_prebuilt_glibc_${{ matrix.os }}
         # A file, directory or wildcard pattern that describes what to upload
-        path: nuclei_riscv_gnu_toolchain_prebuilt_glibc_${{ matrix.os }}.tar.bz2
+        path: asr_riscv_gnu_toolchain_prebuilt_glibc_${{ matrix.os }}.tar.bz2
   
   build_bare_linux_mac:
     name: baremetal for ${{ matrix.os }} 
@@ -190,9 +191,9 @@ jobs:
         cd ./riscv-gcc/ && ./contrib/download_prerequisites
         cd -
 
-    - name: Change toolchain name to Nuclei
+    - name: Change toolchain name to asr
       run: |
-        sed -i -e 's/make_tuple = riscv$(1)-unknown-$(2)/make_tuple = riscv-nuclei-$(2)/g' Makefile
+        sed -i -e 's/make_tuple = riscv$(1)-unknown-$(2)/make_tuple = riscv-asr-$(2)/g' Makefile
 
     - name: Build Toolchain
       run: |
@@ -211,15 +212,15 @@ jobs:
 
     - name: Archive Toolchain
       run: |
-        tar -jcf nuclei_riscv_gnu_toolchain_prebuilt_elf_${{ matrix.os }}.tar.bz2 -C $PREFIX .
+        tar -jcf asr_riscv_gnu_toolchain_prebuilt_elf_${{ matrix.os }}.tar.bz2 -C $PREFIX .
 
     - name: Upload built toolchain artifact
       uses: actions/upload-artifact@v2
       with:
         # Artifact name
-        name: nuclei_riscv_gnu_toolchain_prebuilt_elf_${{ matrix.os }}
+        name: asr_riscv_gnu_toolchain_prebuilt_elf_${{ matrix.os }}
         # A file, directory or wildcard pattern that describes what to upload
-        path: nuclei_riscv_gnu_toolchain_prebuilt_elf_${{ matrix.os }}.tar.bz2
+        path: asr_riscv_gnu_toolchain_prebuilt_elf_${{ matrix.os }}.tar.bz2
 
   build_bare_windows:
     needs: [build_bare_linux_mac]
@@ -275,7 +276,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         # Artifact name
-        name: nuclei_riscv_gnu_toolchain_prebuilt_elf_ubuntu-18.04
+        name: asr_riscv_gnu_toolchain_prebuilt_elf_ubuntu-18.04
 
     - name: Extract prebuilt ubuntu toolchain
       run: |
@@ -320,9 +321,9 @@ jobs:
         cd ./riscv-gcc/ && ./contrib/download_prerequisites
         cd -
 
-    - name: Change toolchain name to Nuclei
+    - name: Change toolchain name to asr
       run: |
-        sed -i -e 's/make_tuple = riscv$(1)-unknown-$(2)/make_tuple = riscv-nuclei-$(2)/g' Makefile
+        sed -i -e 's/make_tuple = riscv$(1)-unknown-$(2)/make_tuple = riscv-asr-$(2)/g' Makefile
 
     - name: Build Toolchain
       run: |
@@ -347,13 +348,13 @@ jobs:
       run: |
         WORKPWD=$(pwd)
         cd $PREFIX
-        zip -9 -q -r ${WORKPWD}/nuclei_riscv_gnu_toolchain_prebuilt_elf_windows.zip .
+        zip -9 -q -r ${WORKPWD}/asr_riscv_gnu_toolchain_prebuilt_elf_windows.zip .
         cd ${WORKPWD}
 
     - name: Upload built toolchain artifact
       uses: actions/upload-artifact@v2
       with:
         # Artifact name
-        name: nuclei_riscv_gnu_toolchain_prebuilt_elf_windows
+        name: asr_riscv_gnu_toolchain_prebuilt_elf_windows
         # A file, directory or wildcard pattern that describes what to upload
-        path: nuclei_riscv_gnu_toolchain_prebuilt_elf_windows.zip
+        path: asr_riscv_gnu_toolchain_prebuilt_elf_windows.zip
